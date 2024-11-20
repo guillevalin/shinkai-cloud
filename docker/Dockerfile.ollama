@@ -1,0 +1,20 @@
+FROM ubuntu:24.10 AS downloader
+RUN apt-get update && apt-get install -y curl unzip
+ARG OLLAMA_VERSION=v0.4.2
+RUN curl -L -o ollama-linux-amd64.tgz https://github.com/ollama/ollama/releases/download/${OLLAMA_VERSION:?}/ollama-linux-amd64.tgz
+RUN FILE_SIZE=$(stat -c %s /ollama-linux-amd64.tgz) && \
+    if [ $FILE_SIZE -lt 26214400 ]; then \
+        echo "Error: ollama file is less than 25MB" && \
+        exit 1; \
+    fi
+RUN tar -xvzf ollama-linux-amd64.tgz \
+    && chmod +x ./bin/ollama
+
+FROM ubuntu:24.10
+RUN apt-get update && apt-get install -y openssl ca-certificates
+WORKDIR /app
+COPY --from=downloader /lib/ollama /lib/ollama
+COPY --from=downloader /bin/ollama ./ollama
+
+EXPOSE 11434
+ENTRYPOINT ["/bin/sh", "-c", "/app/ollama serve"]
