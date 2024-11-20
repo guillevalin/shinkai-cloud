@@ -2,6 +2,9 @@
 
 This project deploys and manages two Google Cloud Run services: `shinkai-node` and `ollama-node`. The deployment is managed using Terraform, and Docker is used to build the container images for these services.
 
+<img width="893" alt="image" src="https://github.com/user-attachments/assets/ab1d635b-b402-4e55-8b17-5680fcc2217c">
+
+
 ## How to install and configure gcloud CLI
 
 1. Install the Google Cloud CLI by following the instructions [here](https://cloud.google.com/sdk/docs/install).
