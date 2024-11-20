@@ -17,11 +17,47 @@ resource "google_cloud_run_service" "shinkai_node" {
                 }
                 env {
                     name  = "EMBEDDINGS_SERVER_URL"
-                    value = "http://localhost:11434"
+                    value = "https://OLLAMA-INSTANCE.REGION.run.app"
                 }
                 env {
                     name  = "FIRST_DEVICE_NEEDS_REGISTRATION_CODE"
                     value = "false"
+                }
+                env {
+                    name  = "LOG_SIMPLE"
+                    value = "true"
+                }
+                env {
+                    name  = "NO_SECRET_FILE"
+                    value = "true"
+                }
+                env {
+                    name  = "REINSTALL_TOOLS"
+                    value = "true"
+                }
+                env {
+                    name  = "API_V2_KEY"
+                    value = "REPLACE_WITH_API_KEY"
+                }
+                env {
+                    name  = "INITIAL_AGENTS_URLS"
+                    value = "https://OLLAMA-INSTANCE.REGION.run.app"
+                }
+                env {
+                    name  = "INITIAL_AGENT_MODELS"
+                    value = "ollama:llama3.1:8b-instruct-q4_1"
+                }
+                env {
+                    name  = "INITIAL_AGENT_NAMES"
+                    value = "o_llama3_1_8b_instruct_q4_1"
+                }
+                env {
+                    name  = "DEFAULT_EMBEDDING_MODEL"
+                    value = "snowflake-arctic-embed:xs"
+                }
+                env {
+                    name  = "SUPPORTED_EMBEDDING_MODELS"
+                    value = "snowflake-arctic-embed:xs"
                 }
             }
         }

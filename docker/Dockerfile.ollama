@@ -14,7 +14,14 @@ FROM ubuntu:24.10
 RUN apt-get update && apt-get install -y openssl ca-certificates
 WORKDIR /app
 COPY --from=downloader /lib/ollama /lib/ollama
-COPY --from=downloader /bin/ollama ./ollama
+COPY --from=downloader /bin/ollama /bin/ollama
 
+# Store the model weights in the container image
+ENV MODEL=llama3.1
+ENV EMBEDDING_MODEL=snowflake-arctic-embed
+RUN ollama serve & sleep 5 && ollama pull $MODEL
+RUN ollama serve & sleep 5 && ollama pull $EMBEDDING_MODEL
+
+# Start Ollama
 EXPOSE 11434
-ENTRYPOINT ["/bin/sh", "-c", "/app/ollama serve"]
+ENTRYPOINT ["ollama", "serve"]
