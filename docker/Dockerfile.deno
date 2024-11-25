@@ -1,0 +1,4 @@
+FROM debian
+COPY --from=denoland/deno:bin-2.1.1 /deno /usr/local/bin/deno
+RUN apt-get update && apt-get install -y chromium tini
+ENTRYPOINT ["tini", "--"]
