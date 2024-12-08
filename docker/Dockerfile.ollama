@@ -1,6 +1,6 @@
 FROM ubuntu:24.10 AS downloader
 RUN apt-get update && apt-get install -y curl unzip
-ARG OLLAMA_VERSION=v0.4.2
+ARG OLLAMA_VERSION=v0.5.1
 RUN curl -L -o ollama-linux-amd64.tgz https://github.com/ollama/ollama/releases/download/${OLLAMA_VERSION:?}/ollama-linux-amd64.tgz
 RUN FILE_SIZE=$(stat -c %s /ollama-linux-amd64.tgz) && \
     if [ $FILE_SIZE -lt 26214400 ]; then \
@@ -17,8 +17,8 @@ COPY --from=downloader /lib/ollama /lib/ollama
 COPY --from=downloader /bin/ollama /bin/ollama
 
 # Store the model weights in the container image
-ENV MODEL=llama3.1
-ENV EMBEDDING_MODEL=snowflake-arctic-embed
+ENV MODEL=llama3.1:8b-instruct-q4_1
+ENV EMBEDDING_MODEL=snowflake-arctic-embed:xs
 RUN ollama serve & sleep 5 && ollama pull $MODEL
 RUN ollama serve & sleep 5 && ollama pull $EMBEDDING_MODEL
 
